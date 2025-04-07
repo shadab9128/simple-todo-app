@@ -32,6 +32,9 @@ jobs:
       env:
         CI: true
 
+    - name: Debug tags
+      run: "Tags will be: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest"
+
   build-and-deploy:
     needs: test
     runs-on: ubuntu-latest
@@ -53,8 +56,6 @@ jobs:
       with:
         context: .
         push: true
-        tags: |
-          ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-          ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
