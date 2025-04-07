@@ -19,6 +19,7 @@ git clone https://github.com/yourusername/simple-todo-app.git
 cd simple-todo-app
 npm install
 npm start
+```
 
 ## Using Docker
 ```bash
