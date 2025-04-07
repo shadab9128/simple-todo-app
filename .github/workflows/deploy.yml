@@ -7,11 +7,25 @@ on:
     branches: ["main"]
 
 env:
-  DOCKERHUB_USERNAME: shadab024  # Hardcoded for testing
+  DOCKERHUB_USERNAME: shadab024
   IMAGE_NAME: simple-todo-app
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Verify Dockerfile exists
+        run: |
+          if [ ! -f "Dockerfile" ]; then
+            echo "::error::Dockerfile not found in root directory!"
+            exit 1
+          fi
+          echo "Dockerfile found, continuing..."
+
   test:
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,10 +36,13 @@ jobs:
       - run: npm test
 
   build-and-deploy:
-    needs: test
+    needs: [verify, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Verify Dockerfile
+        run: ls -la && test -f Dockerfile || exit 1
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -40,6 +57,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: ./Dockerfile  # Explicit Dockerfile path
           push: true
           tags: ${{ env.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           cache-from: type=gha
