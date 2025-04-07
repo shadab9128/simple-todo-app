@@ -6,6 +6,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// Serve frontend static files
+app.use(express.static('public'));
+
 // In-memory database
 let todos = [
     { id: 1, title: 'Learn Node.js', completed: false },
