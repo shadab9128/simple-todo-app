@@ -1,13 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
-
-// Middleware
 app.use(bodyParser.json());
-
-app.use(express.static('public'));  // Serve static files from 'public' folder
+app.use(cors());
 
 // In-memory database
 let todos = [
@@ -16,20 +13,10 @@ let todos = [
 ];
 
 // Routes
-
-// Get all todos
 app.get('/todos', (req, res) => {
     res.json(todos);
 });
 
-// Get a specific todo
-app.get('/todos/:id', (req, res) => {
-    const todo = todos.find(t => t.id === parseInt(req.params.id));
-    if (!todo) return res.status(404).send('Todo not found');
-    res.json(todo);
-});
-
-// Create a new todo
 app.post('/todos', (req, res) => {
     const newTodo = {
         id: todos.length + 1,
@@ -40,18 +27,16 @@ app.post('/todos', (req, res) => {
     res.status(201).json(newTodo);
 });
 
-// Update a todo
+// PUT /todos/:id - Update a todo
 app.put('/todos/:id', (req, res) => {
     const todo = todos.find(t => t.id === parseInt(req.params.id));
     if (!todo) return res.status(404).send('Todo not found');
     
-    todo.title = req.body.title || todo.title;
-    todo.completed = req.body.completed !== undefined ? req.body.completed : todo.completed;
-    
+    todo.completed = req.body.completed;
     res.json(todo);
 });
 
-// Delete a todo
+// DELETE /todos/:id - Delete a todo
 app.delete('/todos/:id', (req, res) => {
     const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
     if (todoIndex === -1) return res.status(404).send('Todo not found');
@@ -60,7 +45,14 @@ app.delete('/todos/:id', (req, res) => {
     res.json(deletedTodo[0]);
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Export the app for testing
+module.exports = app;
+
+// Only start server if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+    const PORT = process.env.PORT || 3000;
+    const server = app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+    module.exports.server = server;
+}
