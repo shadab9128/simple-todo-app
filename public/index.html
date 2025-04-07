@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Todo App</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul id="todoList"></ul>
+    
+    <form id="todoForm">
+        <input type="text" id="todoInput" placeholder="Add a new todo" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <script>
+        const todoList = document.getElementById('todoList');
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+
+        // Fetch todos from the server
+        async function fetchTodos() {
+            const response = await fetch('http://localhost:3000/todos');
+            const todos = await response.json();
+            
+            todoList.innerHTML = '';
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                li.textContent = `${todo.title} - ${todo.completed ? 'Done' : 'Pending'}`;
+                todoList.appendChild(li);
+            });
+        }
+
+        // Add a new todo
+        todoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newTodo = {
+                title: todoInput.value,
+                completed: false
+            };
+            
+            await fetch('http://localhost:3000/todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newTodo)
+            });
+            
+            todoInput.value = '';
+            fetchTodos();
+        });
+
+        // Initial fetch
+        fetchTodos();
+    </script>
+</body>
+</html>
