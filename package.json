@@ -1,16 +1,41 @@
 {
   "name": "simple-todo-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A simple Node.js Todo application with CI/CD pipeline",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "jest --detectOpenHandles --forceExit --coverage",
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "todo",
+    "nodejs",
+    "express"
+  ],
+  "author": "Your Name <your.email@example.com>",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "body-parser": "^2.2.0",
-    "express": "^5.1.0"
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "nodemon": "^3.0.2",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^16.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "husky": "^9.0.11"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ]
   }
 }
