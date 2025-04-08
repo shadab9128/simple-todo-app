@@ -6,7 +6,7 @@ pipeline {
   }
 
   environment {
-    DOCKER_IMAGE = 'shadab9128/todo-app' // Replace with your DockerHub image name
+    DOCKER_IMAGE = 'shadab024/todo-app' // Replace with your DockerHub image name
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
   }
 
