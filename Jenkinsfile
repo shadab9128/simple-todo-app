@@ -2,22 +2,11 @@ pipeline {
   agent any
 
   tools {
-    nodejs "nodejs-23"  // Make sure this is configured in Jenkins Global Tools
-  }
-
-  environment {
-    DOCKER_IMAGE = 'shadab024/todo-app' // Replace with your DockerHub image name
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
+    nodejs "nodejs-23"  // Ensure "nodejs-20" is configured in Jenkins Global Tools
   }
 
   stages {
-    stage('Checkout Code') {
-      steps {
-        git 'https://github.com/shadab9128/simple-todo-app' // Replace with your repository URL
-      }
-    }
-
-    stage('Install Dependencies') {
+    stage('Build') {
       steps {
         sh 'npm ci'
       }
@@ -25,29 +14,14 @@ pipeline {
 
     stage('Test') {
       steps {
-        // Skip this stage if no tests, or customize it
-        sh 'echo "Skipping tests (none defined)"'
-        // or run real tests: sh 'npm test'
-      }
-    }
-
-    stage('Build Docker Image') {
-      steps {
-        sh "docker build -t $DOCKER_IMAGE ."
-      }
-    }
-
-    stage('Push to DockerHub') {
-      steps {
-        withDockerRegistry([ credentialsId: "$DOCKERHUB_CREDENTIALS", url: '' ]) {
-          sh "docker push $DOCKER_IMAGE"
-        }
+        sh 'npm test'
       }
     }
 
     stage('Deploy') {
       steps {
-        echo 'Deploy step goes here (e.g., ECS, Kubernetes, Docker run, etc.)'
+        echo 'Deploy step goes here (e.g., Docker run, Kubernetes, etc.)'
+        // Example: sh 'docker run -d -p 3000:3000 simple-todo-app'
       }
     }
   }
