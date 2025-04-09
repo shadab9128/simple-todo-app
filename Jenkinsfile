@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    nodejs "nodejs-20"  // Make sure this is configured in Jenkins Global Tools
+    nodejs "nodejs-23"  // Make sure this is configured in Jenkins Global Tools
   }
 
   environment {
@@ -13,7 +13,7 @@ pipeline {
   stages {
     stage('Checkout Code') {
       steps {
-        git 'https://github.com/shadab9128/simple-todo-app.git'
+        git 'https://github.com/shadab9128/simple-todo-app' // Replace with your repository URL
       }
     }
 
