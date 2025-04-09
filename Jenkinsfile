@@ -21,7 +21,7 @@ pipeline {
     stage('Deploy') {
       steps {
         echo 'Deploy step goes here (e.g., Docker run, Kubernetes, etc.)'
-        sh 'sudo docker run -d -p 3000:3000 todo-app'
+        // Example: sh 'sudo docker run -d -p 3000:3000 todo-app'
       }
     }
   }
