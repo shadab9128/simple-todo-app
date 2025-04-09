@@ -2,11 +2,11 @@ pipeline {
   agent any
 
   tools {
-    nodejs "nodejs-23"  // Ensure "nodejs-20" is configured in Jenkins Global Tools
+    nodejs "nodejs-23"  // Ensure "nodejs-23" is configured in Jenkins Global Tools
   }
 
   environment {
-    DOCKER_IMAGE = 'shadab024/simple-todo-app' // Replace with your DockerHub repository name
+    DOCKER_IMAGE = 'shadab024/todo-app' // Replace with your DockerHub repository name
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
   }
 
