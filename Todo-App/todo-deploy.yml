@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-todo-app-deploy
+  labels:
+    name: simple-todo-app-deploy
+    app: demo-simple-todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: simple-todo-app-pod
+      app: demo-simple-todo-app
+  template:
+    metadata:
+      name: simple-todo-app-pod
+      labels:
+        name: simple-todo-app-pod
+        app: demo-simple-todo-app
+    spec:
+      containers:
+        - name: simple-todo-app
+          image: shadab024/simple-todo-app:latest
+          ports:
+            - containerPort: 3000
