@@ -1,14 +1,10 @@
-# Simple Todo App 🚀
+# Kubernetes Mini Project with Minikube
 
-A modern Todo application built with Node.js, featuring:
-- RESTful API architecture
-- Docker containerization
-- Automated CI/CD pipeline
-- GitHub Actions integration
+This project demonstrates basic Kubernetes operations using Minikube.
 
-## 📦 Installation
-
-### Prerequisites
+## Prerequisites
+- Minikube installed
+- kubectl configured
 - Node.js 20+
 - Docker
 - Git
@@ -21,11 +17,54 @@ npm install
 npm start
 ```
 
-## Using Docker
+## Steps
+
+### 1. Start Minikube and Cluster
 ```bash
-docker pull shadab024/simple-todo-app:latest
-docker run -p 3000:3000 -d shadab024/simple-todo-app
+minikube start
 ```
+### 2. Create pods for your app and apply it:
+```bash
+kubectl apply -f pod.yaml
+```
+### 3. Create Deployment
+Create deployment.yaml for your app and apply it:
+```bash
+kubectl apply -f deployment.yaml
+```
+### 4. Expose the App
+Create service.yaml to expose your app:
+```bash
+kubectl apply -f service.yaml
+```
+
+### 5. Verify Pods
+Check running pods:
+```bash
+kubectl get pods
+```
+
+### 6. Accessing the Application
+
+To open your exposed service in a web browser, use:
+```bash
+minikube service your-service-name
+```
+
+### 7. View Logs
+```bash
+kubectl describe pods/<pod-name>
+```
+### 8. For scaleup application
+```bash
+kubectl scale deployment/<deployment-name> --replicas=3
+```
+### 9. CleanUp
+```bash
+minikube stop
+minikube delete
+```
+
 
 ## 🤝 Contributing
 - Fork the project
